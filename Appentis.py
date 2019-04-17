@@ -95,7 +95,7 @@ class MQTT_client:
   def publish(self, topic, message):
     #print("Publishing message to topic",topic)
     messageInfo=self.client.publish(topic,message,1)
-    if (messageInfo.rc != MQTT_ERR_SUCCESS) :
+    if (messageInfo.rc != 0) : # ie there is an error during publsishing
         self.reconnect()
 
   def stop(self):
