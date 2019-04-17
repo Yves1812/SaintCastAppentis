@@ -94,7 +94,9 @@ class MQTT_client:
 
   def publish(self, topic, message):
     #print("Publishing message to topic",topic)
-    self.client.publish(topic,message,1)
+    messageInfo=self.client.publish(topic,message,1)
+    if (messageInfo.rc != MQTT_ERR_SUCCESS) :
+        self.reconnect()
 
   def stop(self):
     self.client.loop_stop() #stop the loop
@@ -164,8 +166,9 @@ try:
           client.start()
           print("Periodic Connection reset completed")
           i=0
-      except OSError :
-        print("Network error, connexion lost, trying to reconnect ...")
+      except Exception as exception :
+        print("Network error or connexion lost")
+        print(exception)
         client.reconnect()
 except KeyboardInterrupt:
     pass
